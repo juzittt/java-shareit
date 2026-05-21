@@ -11,8 +11,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByBooker_UserIdOrderByStartDateDesc(Long userId);
 
-    List<Booking> findByBooker_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc
-            (Long userId, LocalDateTime startDate, LocalDateTime endDate);
+    List<Booking> findByBooker_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
+            Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<Booking> findByBooker_UserIdAndEndDateBeforeOrderByStartDateDesc(Long userId, LocalDateTime endDate);
 
@@ -22,8 +22,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByItem_Owner_UserIdOrderByStartDateDesc(Long userId);
 
-    List<Booking> findByItem_Owner_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc
-            (Long userId, LocalDateTime startDate, LocalDateTime endDate);
+    List<Booking> findByItem_Owner_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
+            Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<Booking> findByItem_Owner_UserIdAndEndDateBeforeOrderByStartDateDesc(Long userId, LocalDateTime endDate);
 
@@ -31,11 +31,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByItem_Owner_UserIdAndStatusOrderByStartDateDesc(Long userId, BookingStatus status);
 
-    Optional<Booking> findFirstByItem_ItemIdAndEndDateBeforeAndStatusOrderByStartDateAsc
-            (Long itemId, LocalDateTime endDate, BookingStatus status);
+    Optional<Booking> findFirstByItem_ItemIdAndEndDateBeforeAndStatusOrderByStartDateAsc(
+            Long itemId, LocalDateTime endDate, BookingStatus status);
 
-    Optional<Booking> findFirstByItem_ItemIdAndStartDateAfterAndStatusOrderByStartDateAsc
-            (Long itemId, LocalDateTime startDate, BookingStatus status);
+    Optional<Booking> findFirstByItem_ItemIdAndStartDateAfterAndStatusOrderByStartDateAsc(
+            Long itemId, LocalDateTime startDate, BookingStatus status);
 
     Boolean existsByBooker_UserIdAndItem_ItemIdAndEndDateBefore(Long userId, Long itemId, LocalDateTime endDate);
 }

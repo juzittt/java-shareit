@@ -84,8 +84,8 @@ public class BookingServiceImpl implements BookingService {
                     .map(bookingMapper::toBookingDto)
                     .toList();
             case ("CURRENT") ->
-                    bookingRepository.findByBooker_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc
-                                    (userId, LocalDateTime.now(), LocalDateTime.now())
+                    bookingRepository.findByBooker_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
+                            userId, LocalDateTime.now(), LocalDateTime.now())
                             .stream()
                             .map(bookingMapper::toBookingDto)
                             .toList();
@@ -123,8 +123,8 @@ public class BookingServiceImpl implements BookingService {
                     .map(bookingMapper::toBookingDto)
                     .toList();
             case ("CURRENT") ->
-                    bookingRepository.findByItem_Owner_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc
-                                    (userId, LocalDateTime.now(), LocalDateTime.now())
+                    bookingRepository.findByItem_Owner_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
+                            userId, LocalDateTime.now(), LocalDateTime.now())
                             .stream()
                             .map(bookingMapper::toBookingDto)
                             .toList();
