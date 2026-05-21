@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class ItemRequestDto {
+public class NewItemRequest {
     @NotNull(message = "Описание не может быть пустым")
     private String description;
 }
