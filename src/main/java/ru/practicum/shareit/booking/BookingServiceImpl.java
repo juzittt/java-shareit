@@ -68,7 +68,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDto> getBookings(Long userId, String state) {
         validateUser(userId);
 
-        return toDtoList(switch (state.toUpperCase()) {
+        return toDtoList( switch (state.toUpperCase()) {
             case ("ALL") -> bookingRepository.findByBooker_UserIdOrderByStartDateDesc(userId);
             case ("CURRENT") ->
                     bookingRepository.findByBooker_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
@@ -89,7 +89,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDto> getOwnerBookings(Long userId, String state) {
         validateUser(userId);
 
-        return toDtoList(switch (state.toUpperCase()) {
+        return toDtoList( switch (state.toUpperCase()) {
             case ("ALL") -> bookingRepository.findByItem_Owner_UserIdOrderByStartDateDesc(userId);
             case ("CURRENT") ->
                     bookingRepository.findByItem_Owner_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
