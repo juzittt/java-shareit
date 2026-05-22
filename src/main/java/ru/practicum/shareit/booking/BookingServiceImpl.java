@@ -64,92 +64,46 @@ public class BookingServiceImpl implements BookingService {
         return bookingMapper.toBookingDto(booking);
     }
 
-    /**
-     * Максим, привет!
-     * В процессе разработки я столкнулся с двумя этими методами (getBookings и getOwnerBookings)
-     * По сути каркас метода, за исключением вызываемых методов внутри, одинаковый, как я мог избежать этого повторения?
-     * Еще меня смутило то, что в каждом кейсе у метода я вызываю
-     *                     .stream()
-     *                     .map(bookingMapper::toBookingDto)
-     *                     .toList();
-     * Могу ли я как-то это изменить, чтобы сократить код?
-     */
     @Override
     public List<BookingDto> getBookings(Long userId, String state) {
         validateUser(userId);
 
-        return switch (state.toUpperCase()) {
-            case ("ALL") -> bookingRepository.findByBooker_UserIdOrderByStartDateDesc(userId)
-                    .stream()
-                    .map(bookingMapper::toBookingDto)
-                    .toList();
+        return toDtoList(switch (state.toUpperCase()) {
+            case ("ALL") -> bookingRepository.findByBooker_UserIdOrderByStartDateDesc(userId);
             case ("CURRENT") ->
                     bookingRepository.findByBooker_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
-                            userId, LocalDateTime.now(), LocalDateTime.now())
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                            userId, LocalDateTime.now(), LocalDateTime.now());
             case ("PAST") ->
-                    bookingRepository.findByBooker_UserIdAndEndDateBeforeOrderByStartDateDesc(userId, LocalDateTime.now())
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                    bookingRepository.findByBooker_UserIdAndEndDateBeforeOrderByStartDateDesc(userId, LocalDateTime.now());
             case ("FUTURE") ->
-                    bookingRepository.findByBooker_UserIdAndStartDateAfterOrderByStartDateDesc(userId, LocalDateTime.now())
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                    bookingRepository.findByBooker_UserIdAndStartDateAfterOrderByStartDateDesc(userId, LocalDateTime.now());
             case ("WAITING") ->
-                    bookingRepository.findByBooker_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.WAITING)
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                    bookingRepository.findByBooker_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.WAITING);
             case ("REJECTED") ->
-                    bookingRepository.findByBooker_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.REJECTED)
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                    bookingRepository.findByBooker_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.REJECTED);
             default -> List.of();
-        };
+        });
     }
 
     @Override
     public List<BookingDto> getOwnerBookings(Long userId, String state) {
         validateUser(userId);
 
-        return switch (state.toUpperCase()) {
-            case ("ALL") -> bookingRepository.findByItem_Owner_UserIdOrderByStartDateDesc(userId)
-                    .stream()
-                    .map(bookingMapper::toBookingDto)
-                    .toList();
+        return toDtoList(switch (state.toUpperCase()) {
+            case ("ALL") -> bookingRepository.findByItem_Owner_UserIdOrderByStartDateDesc(userId);
             case ("CURRENT") ->
                     bookingRepository.findByItem_Owner_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
-                            userId, LocalDateTime.now(), LocalDateTime.now())
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                            userId, LocalDateTime.now(), LocalDateTime.now());
             case ("PAST") ->
-                    bookingRepository.findByItem_Owner_UserIdAndEndDateBeforeOrderByStartDateDesc(userId, LocalDateTime.now())
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                    bookingRepository.findByItem_Owner_UserIdAndEndDateBeforeOrderByStartDateDesc(userId, LocalDateTime.now());
             case ("FUTURE") ->
-                    bookingRepository.findByItem_Owner_UserIdAndStartDateAfterOrderByStartDateDesc(userId, LocalDateTime.now())
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                    bookingRepository.findByItem_Owner_UserIdAndStartDateAfterOrderByStartDateDesc(userId, LocalDateTime.now());
             case ("WAITING") ->
-                    bookingRepository.findByItem_Owner_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.WAITING)
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                    bookingRepository.findByItem_Owner_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.WAITING);
             case ("REJECTED") ->
-                    bookingRepository.findByItem_Owner_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.REJECTED)
-                            .stream()
-                            .map(bookingMapper::toBookingDto)
-                            .toList();
+                    bookingRepository.findByItem_Owner_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.REJECTED);
             default -> List.of();
-        };
+        });
     }
 
     private void validateBookingDates(NewBookingRequest request) {
@@ -225,5 +179,11 @@ public class BookingServiceImpl implements BookingService {
             throw new AccessException("Пользователь с Id " + userId +
                     ". Не является владельцем предмета или заказчиком сделки c Id " + booking.getId());
         }
+    }
+
+    private List<BookingDto> toDtoList(List<Booking> bookings) {
+        return bookings.stream()
+                .map(bookingMapper::toBookingDto)
+                .toList();
     }
 }
