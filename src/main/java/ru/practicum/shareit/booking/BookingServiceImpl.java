@@ -68,42 +68,44 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDto> getBookings(Long userId, String state) {
         validateUser(userId);
 
-        return toDtoList(switch (state.toUpperCase()) {
-            case ("ALL") -> bookingRepository.findByBooker_UserIdOrderByStartDateDesc(userId);
-            case ("CURRENT") ->
-                    bookingRepository.findByBooker_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
-                            userId, LocalDateTime.now(), LocalDateTime.now());
-            case ("PAST") ->
-                    bookingRepository.findByBooker_UserIdAndEndDateBeforeOrderByStartDateDesc(userId, LocalDateTime.now());
-            case ("FUTURE") ->
-                    bookingRepository.findByBooker_UserIdAndStartDateAfterOrderByStartDateDesc(userId, LocalDateTime.now());
-            case ("WAITING") ->
-                    bookingRepository.findByBooker_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.WAITING);
-            case ("REJECTED") ->
-                    bookingRepository.findByBooker_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.REJECTED);
-            default -> List.of();
-        });
+        return toDtoList(
+                switch (state.toUpperCase()) {
+                    case ("ALL") -> bookingRepository.findByBooker_UserIdOrderByStartDateDesc(userId);
+                    case ("CURRENT") ->
+                            bookingRepository.findByBooker_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
+                                    userId, LocalDateTime.now(), LocalDateTime.now());
+                    case ("PAST") ->
+                            bookingRepository.findByBooker_UserIdAndEndDateBeforeOrderByStartDateDesc(userId, LocalDateTime.now());
+                    case ("FUTURE") ->
+                            bookingRepository.findByBooker_UserIdAndStartDateAfterOrderByStartDateDesc(userId, LocalDateTime.now());
+                    case ("WAITING") ->
+                            bookingRepository.findByBooker_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.WAITING);
+                    case ("REJECTED") ->
+                            bookingRepository.findByBooker_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.REJECTED);
+                    default -> List.of();
+                });
     }
 
     @Override
     public List<BookingDto> getOwnerBookings(Long userId, String state) {
         validateUser(userId);
 
-        return toDtoList(switch (state.toUpperCase()) {
-            case ("ALL") -> bookingRepository.findByItem_Owner_UserIdOrderByStartDateDesc(userId);
-            case ("CURRENT") ->
-                    bookingRepository.findByItem_Owner_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
-                            userId, LocalDateTime.now(), LocalDateTime.now());
-            case ("PAST") ->
-                    bookingRepository.findByItem_Owner_UserIdAndEndDateBeforeOrderByStartDateDesc(userId, LocalDateTime.now());
-            case ("FUTURE") ->
-                    bookingRepository.findByItem_Owner_UserIdAndStartDateAfterOrderByStartDateDesc(userId, LocalDateTime.now());
-            case ("WAITING") ->
-                    bookingRepository.findByItem_Owner_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.WAITING);
-            case ("REJECTED") ->
-                    bookingRepository.findByItem_Owner_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.REJECTED);
-            default -> List.of();
-        });
+        return toDtoList(
+                switch (state.toUpperCase()) {
+                    case ("ALL") -> bookingRepository.findByItem_Owner_UserIdOrderByStartDateDesc(userId);
+                    case ("CURRENT") ->
+                            bookingRepository.findByItem_Owner_UserIdAndStartDateBeforeAndEndDateAfterOrderByStartDateDesc(
+                                    userId, LocalDateTime.now(), LocalDateTime.now());
+                    case ("PAST") ->
+                            bookingRepository.findByItem_Owner_UserIdAndEndDateBeforeOrderByStartDateDesc(userId, LocalDateTime.now());
+                    case ("FUTURE") ->
+                            bookingRepository.findByItem_Owner_UserIdAndStartDateAfterOrderByStartDateDesc(userId, LocalDateTime.now());
+                    case ("WAITING") ->
+                            bookingRepository.findByItem_Owner_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.WAITING);
+                    case ("REJECTED") ->
+                            bookingRepository.findByItem_Owner_UserIdAndStatusOrderByStartDateDesc(userId, BookingStatus.REJECTED);
+                    default -> List.of();
+                });
     }
 
     private void validateBookingDates(NewBookingRequest request) {
