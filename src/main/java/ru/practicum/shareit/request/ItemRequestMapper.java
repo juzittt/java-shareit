@@ -6,7 +6,7 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.NewItemRequest;
 
 @Mapper(componentModel = "spring")
-public interface RequestMapper {
+public interface ItemRequestMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "requestor", ignore = true)

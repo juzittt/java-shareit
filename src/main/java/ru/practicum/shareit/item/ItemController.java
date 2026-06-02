@@ -2,7 +2,6 @@ package ru.practicum.shareit.item;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +17,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
-@Slf4j
 public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
     public ResponseEntity<ItemDto> addItem(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @RequestBody @Valid NewItemRequest request) {
-        log.warn("Входящий json: {}", request);
         ItemDto addedItem = itemService.addItem(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedItem);
     }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.NewUserRequest;
 import ru.practicum.shareit.user.dto.UpdateUserRequest;
@@ -15,6 +16,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Transactional
     public UserDto createUser(@Valid NewUserRequest request) {
         log.debug("[CreateUser] Create new user with name: {} and email: {}", request.getName(), request.getEmail());
         User user = userMapper.toUserEntity(request);
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto updateUser(Long userId, UpdateUserRequest request) {
         log.debug("[UpdateUser] Update for user with id: {}. Fields from request: name: {}, email: {}",
                 userId, request.getName(), request.getEmail());
@@ -52,6 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
         log.debug("[DeleteUser] delete user with id: {}", userId);
         userRepository.deleteById(userId);

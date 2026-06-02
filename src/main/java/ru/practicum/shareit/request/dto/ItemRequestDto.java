@@ -3,8 +3,14 @@ package ru.practicum.shareit.request.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class ItemRequestDto {
+    private Long id;
+
     @NotNull(message = "Описание не может быть пустым")
     private String description;
+
+    private LocalDateTime created;
 }

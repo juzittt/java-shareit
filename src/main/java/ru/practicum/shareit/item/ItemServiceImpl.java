@@ -3,6 +3,7 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.BookingStatus;
@@ -18,6 +19,8 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.NewItemRequest;
 import ru.practicum.shareit.item.dto.UpdateItemRequest;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
@@ -27,6 +30,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
@@ -41,17 +45,26 @@ public class ItemServiceImpl implements ItemService {
 
     private final CommentMapper commentMapper;
 
+    private final ItemRequestRepository itemRequestRepository;
+
     @Override
+    @Transactional
     public ItemDto addItem(Long userId, NewItemRequest request) {
         User user = validateUser(userId);
         Item item = itemMapper.newItemRequest(request);
         item.setOwner(user);
+
+        if (request.getRequestId() != null) {
+            ItemRequest itemRequest = checkItemRequestExists(request.getRequestId());
+            item.setRequest(itemRequest);
+        }
 
         Item savedItem = itemRepository.save(item);
         return itemMapper.toItemDto(savedItem);
     }
 
     @Override
+    @Transactional
     public ItemDto updateItem(Long userId, Long itemId, UpdateItemRequest request) {
         validateUser(userId);
         Item item = validateItem(itemId);
@@ -62,6 +75,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public void deleteItem(Long itemId, Long userId) {
         Item item = validateItem(itemId);
         validateOwner(userId, item);
@@ -194,5 +208,10 @@ public class ItemServiceImpl implements ItemService {
                 .toList());
 
         return itemBooking;
+    }
+
+    private ItemRequest checkItemRequestExists(Long requestId) {
+        return itemRequestRepository.findById(requestId)
+                .orElseThrow(() -> new NotFoundException("Запрос с Id: " + requestId + " не найден"));
     }
 }
