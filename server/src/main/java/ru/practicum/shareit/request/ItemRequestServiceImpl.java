@@ -26,6 +26,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository requestRepository;
 
     @Override
+    @Transactional
     public ItemRequestDto addRequest(Long userId, NewItemRequestReq request) {
         User requester = validateUser(userId);
         ItemRequest itemRequest = requestMapper.toItemEntity(request);

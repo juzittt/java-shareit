@@ -8,10 +8,7 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.exception.DuplicatedDataException;
-import ru.practicum.shareit.exception.IlligalArgumentException;
-import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.exception.UnavailibleExceprion;
+import ru.practicum.shareit.exception.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -61,6 +58,13 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleIllegalArgument(final IlligalArgumentException e) {
+        log.warn(e.getMessage());
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleAccessException(final AccessException e) {
         log.warn(e.getMessage());
         return new ErrorResponse(e.getMessage());
     }

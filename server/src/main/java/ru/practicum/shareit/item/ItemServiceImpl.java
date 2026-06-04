@@ -127,6 +127,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public CommentDto addComment(Long userId, Long itemId, NewCommentRequest request) {
         User user = validateUser(userId);
         Item item = validateItem(itemId);
@@ -136,6 +137,7 @@ public class ItemServiceImpl implements ItemService {
         Comment comment = commentMapper.toCommentEntity(request);
         comment.setItem(item);
         comment.setCommentator(user);
+        comment.setCreated(LocalDateTime.now());
 
         Comment savedComment = commentRepository.save(comment);
 
