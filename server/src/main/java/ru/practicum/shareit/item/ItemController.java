@@ -48,7 +48,7 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<Page<ItemBooking>> getItems(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                       @RequestParam(name = "from", defaultValue = "0") Integer from,
-                                                      @RequestParam(name = "size", defaultValue = "10") Integer size){
+                                                      @RequestParam(name = "size", defaultValue = "10") Integer size) {
         return ResponseEntity.ok(itemService.getItems(userId, from, size));
     }
 

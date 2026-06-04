@@ -10,11 +10,12 @@ import ru.practicum.shareit.item.model.Item;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT i FROM Item i WHERE i.owner.userId = :ownerId")
-    Page<Item> findByOwnerId(@Param("ownerId")Long userId, Pageable pageable);
+    Page<Item> findByOwnerId(@Param("ownerId") Long userId, Pageable pageable);
 
     @Query("SELECT i FROM Item i WHERE i.available = :available " +
             "AND (LOWER(i.name) LIKE LOWER(CONCAT('%', :text, '%')) " +
             "OR LOWER(i.description) LIKE LOWER(CONCAT('%', :text, '%')))")
     Page<Item> searchAvailableItems(@Param("text") String text,
                                     @Param("available") Boolean available,
-                                    Pageable pageable);}
+                                    Pageable pageable);
+}

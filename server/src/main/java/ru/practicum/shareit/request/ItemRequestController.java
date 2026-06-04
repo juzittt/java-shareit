@@ -17,24 +17,24 @@ public class ItemRequestController {
 
     @PostMapping
     public ResponseEntity<ItemRequestDto> addRequest(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                     @RequestBody NewItemRequestReq request){
+                                                     @RequestBody NewItemRequestReq request) {
         ItemRequestDto addedItemRequest = requestService.addRequest(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedItemRequest);
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemRequestDto>> getRequest(@RequestHeader("X-Sharer-User-Id") Long userId){
+    public ResponseEntity<List<ItemRequestDto>> getRequest(@RequestHeader("X-Sharer-User-Id") Long userId) {
         return ResponseEntity.ok(requestService.getUserRequests(userId));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ItemRequestDto>> getRequestAll(@RequestHeader("X-Sharer-User-Id") Long userId){
+    public ResponseEntity<List<ItemRequestDto>> getRequestAll(@RequestHeader("X-Sharer-User-Id") Long userId) {
         return ResponseEntity.ok(requestService.getAllRequests(userId));
     }
 
     @GetMapping("/{requestId}")
     public ResponseEntity<ItemRequestDto> getRequestById(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                         @PathVariable("requestId") Long requestId){
+                                                         @PathVariable("requestId") Long requestId) {
         return ResponseEntity.ok(requestService.getRequest(userId, requestId));
     }
 }
