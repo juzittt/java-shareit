@@ -88,6 +88,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemBooking getItem(Long userId, Long itemId) {
         validateUser(userId);
 

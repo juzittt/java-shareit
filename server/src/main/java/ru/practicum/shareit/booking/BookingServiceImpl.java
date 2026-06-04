@@ -36,6 +36,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public BookingDto addBooking(Long userId, NewBookingRequest request) {
+        log.info("[addBooking] Creating booking. userId={}, itemId={}", userId, request.getItemId());
         Item item = validateItem(request.getItemId());
         User user = validateUser(userId);
 
@@ -49,6 +50,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public BookingDto updateBooking(Long userId, Long bookingId, Boolean approved) {
+        log.info("[updateBooking] Updating booking. userId={}, bookingId={}", userId, bookingId);
         Booking booking = validateBooking(bookingId);
         validateUserIsOwner(userId, booking);
 
@@ -64,6 +66,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto getBooking(Long userId, Long bookingId) {
+        log.info("[getBooking] Getting booking. userId={}, bookingId={}", userId, bookingId);
         Booking booking = validateBooking(bookingId);
 
         validateOwnerOrBookerOfBooking(userId, booking);

@@ -5,13 +5,12 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.NewUserRequest;
 import ru.practicum.shareit.user.dto.UpdateUserRequest;
 
-@Controller
+@RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Slf4j
@@ -28,7 +27,7 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     public ResponseEntity<Object> updateUser(@PathVariable Long userId,
-                                              @RequestBody UpdateUserRequest request) {
+                                             @Valid @RequestBody UpdateUserRequest request) {
         log.info("PATCH /users/{}", userId);
         return userClient.updateUser(userId, request);
     }
