@@ -15,6 +15,7 @@ import ru.practicum.shareit.request.dto.NewItemRequestReq;
 @Validated
 public class ItemRequestController {
     private final ItemRequestClient itemRequestClient;
+
     @PostMapping
     public ResponseEntity<Object> addRequest(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                      @Valid @RequestBody NewItemRequestReq request) {

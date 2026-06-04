@@ -44,6 +44,7 @@ public class UserController {
         log.info("DELETE /users/{}", userId);
         return userClient.deleteUser(userId);
     }
+
     @GetMapping
     public ResponseEntity<Object> getUsers(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @RequestParam(name = "from", defaultValue = "0") Integer from,
